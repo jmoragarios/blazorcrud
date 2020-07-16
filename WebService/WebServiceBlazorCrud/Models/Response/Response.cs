@@ -10,7 +10,7 @@ namespace WebServiceBlazorCrud.Models.Response
     {
         public int Success { get; set; }
         public string Message { get; set; }
-        public object Data { get; set; }
+        public List<Cattle> Data { get; set; }
 
         public Response()
         {
