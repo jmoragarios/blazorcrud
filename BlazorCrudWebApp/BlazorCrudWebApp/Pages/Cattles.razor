@@ -1,0 +1,43 @@
+﻿@page "/cattles"
+
+@using System.Net.Http;
+@using System.Net.Http.Json;
+@using Data;
+@inject HttpClient Http;
+<h3>Cattles</h3>
+<div class="row">
+    <div class="col-12 text-right">
+        <a href="cattleform">New</a>
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Breed</th>
+        <th></th>
+    </tr>
+    @if (oResponse != null && oResponse.Data != null)
+    {
+        @foreach (var oElemnet in oResponse.Data)
+        {
+            <tr>
+                <td>@oElemnet.Id</td>
+                <td>@oElemnet.Name</td>
+                <td>@oElemnet.Breed</td>
+                <td>
+                    <a>Edit</a>
+                    <a>Delete</a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+    public string Url = "/api/Cattle";
+    public Response oResponse = new Response();
+
+    protected override async Task OnInitializedAsync() =>
+        oResponse = await Http.GetFromJsonAsync<Response>(Url);
+}
