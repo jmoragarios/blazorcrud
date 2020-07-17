@@ -1,4 +1,4 @@
-﻿@page "/cattles"
+﻿@page "/cattles";
 
 @using System.Net.Http;
 @using System.Net.Http.Json;
@@ -26,8 +26,8 @@
                 <td>@oElemnet.Name</td>
                 <td>@oElemnet.Breed</td>
                 <td>
-                    <a>Edit</a>
-                    <a>Delete</a>
+                    <a href="cattleform/@oElemnet.Id">Edit</a>
+                    <a href="deletecattle/@oElemnet.Id">Delete</a>
                 </td>
             </tr>
         }
@@ -36,8 +36,8 @@
 
 @code {
     public string Url = "/api/Cattle";
-    public Response oResponse = new Response();
+    public Response<List<Data.Cattle>> oResponse = new Response<List<Data.Cattle>>();
 
     protected override async Task OnInitializedAsync() =>
-        oResponse = await Http.GetFromJsonAsync<Response>(Url);
+        oResponse = await Http.GetFromJsonAsync<Response<List<Data.Cattle>>>(Url);
 }

@@ -1,4 +1,5 @@
 ﻿@page "/cattleform";
+@page "/cattleform/{Id:int}";
 
 @using System.Net.Http;
 @using System.Net.Http.Json;
@@ -31,15 +32,36 @@
 </EditForm>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
     Data.Cattle oCattle = new Data.Cattle();
-    Response oResponse = new Response();
+    Response<object> oResponse = new Response<object>();
+    Response<Data.Cattle> oCattleResponse = new Response<Cattle>();
     public string Url = "/api/Cattle";
 
     private async Task Save()
     {
-        var response = await Http.PostAsJsonAsync<Data.Cattle>(Url, oCattle);
-        oResponse = response.Content.ReadFromJsonAsync<Response>().Result;
+        if (Id != 0)
+        {
+            var response = await Http.PutAsJsonAsync<Data.Cattle>(Url, oCattle);
+            oResponse = response.Content.ReadFromJsonAsync<Response<object>>().Result;
+        }
+        else
+        {
+            var response = await Http.PostAsJsonAsync<object>(Url, oCattle);
+            oResponse = response.Content.ReadFromJsonAsync<Response<object>>().Result;
+        }
 
         NavigationManager.NavigateTo("/cattles");
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(Id != 0)
+        {
+            oCattleResponse = await Http.GetFromJsonAsync<Response<Data.Cattle>>($"{Url}/{Id}");
+            oCattle = oCattleResponse.Data;
+        }
+    }
+
 }
