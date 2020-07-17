@@ -17,7 +17,7 @@ namespace WebServiceBlazorCrud.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            Response oResponse = new Response();
+            Response<List<Cattle>> oResponse = new Response<List<Cattle>>();
 
             try
             {
@@ -37,10 +37,33 @@ namespace WebServiceBlazorCrud.Controllers
             return Ok(oResponse);
         }
 
+        [HttpGet("{Id}")]
+        public IActionResult Get(int Id)
+        {
+            Response<Cattle> oResponse = new Response<Cattle>();
+
+            try
+            {
+                using (blazorcrudContext db = new blazorcrudContext())
+                {
+                    var lst = db.Cattle.Find(Id);
+                    oResponse.Success = 1;
+                    oResponse.Data = lst;
+                }
+            }
+            catch (Exception ex)
+            {
+                oResponse.Message = ex.Message;
+                throw;
+            }
+
+            return Ok(oResponse);
+        }
+
         [HttpPost]
         public IActionResult Add(CattleRequest model)
         {
-            Response oResponse = new Response();
+            Response<object> oResponse = new Response<object>();
 
             try
             {
@@ -65,7 +88,7 @@ namespace WebServiceBlazorCrud.Controllers
         [HttpPut]
         public IActionResult Edit(CattleRequest model)
         {
-            Response oResponse = new Response();
+            Response<object> oResponse = new Response<object>();
 
             try
             {
@@ -90,7 +113,7 @@ namespace WebServiceBlazorCrud.Controllers
         [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
-            Response oResponse = new Response();
+            Response<object> oResponse = new Response<object>();
 
             try
             {

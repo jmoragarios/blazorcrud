@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace WebServiceBlazorCrud.Models.Response
 {
-    public class Response
+    public class Response<T>
     {
         public int Success { get; set; }
         public string Message { get; set; }
-        public List<Cattle> Data { get; set; }
+        public T Data { get; set; }
 
         public Response()
         {
